@@ -7,11 +7,13 @@ module.exports ={
     editCurso: editCurso,
     deleteCurso: deleteCurso,
     getCurso: getCurso,
-    findCurso:findCurso
+    findCurso:findCurso,
+    findAllCursos:findAllCursos
 };
 
 function addCurso(data,callback) {
     if(data!== null && data !==undefined){
+
         connDB.insertCurso(data,function (err,idCURSOS) {
             if(err){
                 callback(err,null);
@@ -56,7 +58,10 @@ function getCurso(data,callback) {
                 callback(err,null);
             }
             else{
-                callback(null,result);
+                connDB.getHours(data,function (err,result2) {
+                    result[0].hours = result2;
+                    callback(null,result);
+                })
             }
         });
 
@@ -65,6 +70,19 @@ function getCurso(data,callback) {
 function findCurso(data,callback) {
     if(data!== null && data !==undefined){
         connDB.findCurso(data,function (err,result) {
+            if(err){
+                callback(err,null);
+            }
+            else{
+                callback(null,result);
+            }
+        });
+
+    }
+}
+function findAllCursos(data,callback) {
+    if(data!== null && data !==undefined){
+        connDB.findAllCursos(data,function (err,result) {
             if(err){
                 callback(err,null);
             }

@@ -6,28 +6,29 @@ var util = require('util');
 var expressValidator = require('express-validator');
 var fs = require('fs');
 var cursos = require('./modules/managCursos');
-var bootstrap = require('bootstrap-styl'),
-    stylus    = require('stylus');
+var bootstrap = require('bootstrap-styl');
+    //stylus    = require('stylus');
 
-function compile(str) {
+/*function compile(str) {
     return stylus(str)
         .use(bootstrap());
-}
+}*/
 var app = express();
 
 
 //MIDDLEWARES
 
-// uncomment after placing your favicon in /public
+//favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true}));
 app.use(expressValidator());
-app.use(stylus.middleware({
+/*app.use(stylus.middleware({
     src: path.join(__dirname, 'public')
     , compile: compile
-}));
-app.use(express.static(path.join(__dirname, 'public')));
+}));*/
+
 
 
 app.post("/cursos",function (request,response) {
@@ -46,15 +47,16 @@ app.post("/cursos",function (request,response) {
             response.status(400).send(('There have been validation errors: ' + util.inspect(result.array())));
             return;
         }
+
         cursos.addCurso(request.body,function (err,idCURSO) {
-        if(err){
-          console.log(err);
-          response.status(400);
-        }
-          else{
-          console.log("Se a añadido el curso numero: "+ idCURSO);
-          response.status(200);
-       }
+            if(err){
+              console.log(err);
+              response.status(400);
+            }
+              else{
+              console.log("Se a añadido el curso numero: "+ idCURSO);
+              response.status(200);
+           }
        });
     });
     response.end();
@@ -129,7 +131,6 @@ app.get("/cursos/:indice",function (request,response) {
           response.status(400);
         }
         else{
-          console.log(result);
           response.status(200);
           response.json(result);
        }
@@ -138,11 +139,10 @@ app.get("/cursos/:indice",function (request,response) {
 app.get("/cursos",function (request,response) {
 
     var values = {
-        name : request.query.str,
-        nMax :  request.query.num,
+        name : request.query.name,
+        nMax :  request.query.nMax,
         pos : request.query.pos
     };
-
     cursos.findCurso(values,function (err,result) {
         if(err){
           console.log(err);
@@ -153,6 +153,24 @@ app.get("/cursos",function (request,response) {
           response.json(result);
        }
        });
+
+});
+
+app.get("/cursosAll",function (request,response) {
+
+    var values = {
+        name : request.query.name
+    };
+    cursos.findAllCursos(values,function (err,result) {
+        if(err){
+            console.log(err);
+            response.status(400);
+        }
+        else{
+            response.status(200);
+            response.json(result);
+        }
+    });
 
 });
 

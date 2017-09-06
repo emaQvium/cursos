@@ -1,41 +1,102 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <title>CrSOS</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="x-ua-compatible" content="IE=edge">
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-    <script src="javascrips/usuarios.js"></script>
-</head>
-<body>
-<div class="container-fluid ">
-    <div class="page-header" class="col-md-2">
-        <h1>CrSOS</h1>
-    </div>
-    <form id="formBuscarCurso" action="/cursos?" class="form-inline my-2 my-lg-0 pull-left">
-        <input class="form-control mr-sm-2" type="text" placeholder="Busqueda de curso">
-        <button id="searchCursosBtn" class="btn btn-outline-success my-2 my-sm-0" type="submit">Buscar</button>
-    </form>
 
-    <table id="cursosTable" class="table table-bordered table-striped table-hover">
-        <thead>
-        <tr >
-            <th class="text-center col-md-2">Nombre Curso</th>
-            <th class="text-center col-md-2">Lugar</th>
-            <th class="text-center col-md-2">Inicio</th>
-            <th class="text-center col-md-2">Fin</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr class="cursoRow">
-            <td class="text-center data-curso" >Aqui</td>
-            <td class="text-center data-curso" >Van</td>
-            <td class="text-center data-curso" >Los</td>
-            <td class="text-center data-curso" >Cursos</td>
-        </tr>
-        </tbody>
-    </table>
-</div>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CrSOS</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.7/journal/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=News+Cycle:400,700">
+    <link rel="stylesheet" href="stylesheets/user.css">
+    <link rel="stylesheet" href="stylesheets/Navigation-with-Search1.css">
+    <script src="javascripts/jquery-3.2.1.min.js"></script>
+    <script src="javascripts/cursosJQ.js"></script>
+    <script src="javascripts/jquery-dateFormat.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+    <nav class="navbar navbar-default">
+        <div class="container">
+            <div class="navbar-header"><a class="navbar-brand navbar-link" href="#">Cr_SOS </a>
+                <button class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navcol-1"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button>
+            </div>
+            <div class="collapse navbar-collapse" id="navcol-1">
+                <ul class="nav navbar-nav">
+                    <li role="presentation"><a href="#">Search Courses</a></li>
+                </ul>
+                <button class="btn btn-primary navbar-btn navbar-right" type="button"><strong>SIGN IN</strong> </button>
+            </div>
+        </div>
+    </nav>
+    <div>
+        <nav class="navbar navbar-default navigation-clean-search">
+            <div class="container">
+                <div class="navbar-header">
+                    <a class="navbar-brand navbar-link" href="#"> </a>
+                    <button class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navcol-2"><span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span></button>
+                </div>
+                <div class="collapse navbar-collapse" id="navcol-2">
+                    <ul class="nav navbar-nav"></ul>
+                    <input id="search-field" type="text" style="margin-left:300px;">
+                    <button id="searchCursosBtn" class="btn btn-default" style="background-color:rgb(92,203,130);margin:5px;margin-right:2px;margin-left:3px;">Search</button>
+                </div>
+            </div>
+        </nav>
+    </div>
+    <div class="container">
+        <p>Here you can see the resulting search. </p>
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Name </th>
+                        <th>Location </th>
+                        <th>Starts </th>
+                        <th>Ends </th>
+                        <th>Places Left</th>
+                    </tr>
+                </thead>
+                <tbody id="cursosTable">
+                </tbody>
+            </table>
+        </div>
+        <nav>
+            <ul class="pager">
+                <li id="prevPage" class="previous"><a href="#">Previous </a></li>
+                <li id="pageNumber">0/0</li>
+                <li id="nextPage" class="next"><a href="#">More </a></li>
+            </ul>
+        </nav>
+        <div class="media">
+            <div class="media-body"></div>
+        </div>
+    </div>
+    <footer class="site-footer">
+        <div class="container">
+            <hr>
+            <div class="row">
+                <div class="col-sm-6">
+                    <h5>crSOS © 2017</h5></div>
+            </div>
+        </div>
+    </footer>
+    <div id="ventanaCurso">
+        <div class="page-header">
+        <h1 id="cursoName">Curso </h1></div>
+    <p id="cursoDesc">BLALBLABBLALBLABBLALBLABBLALBLABBLALBLABBLALBLA </p>
+    <strong>Lugar de Imparticion</strong>
+    <p id="cursoLugar">Paragraph</p>
+    <strong>Ciudad </strong>
+    <p id="cursoCiudad">Paragraph</p>
+    <strong>Duracion </strong>
+    <p id="cursoDura">Paragraph</p>
+    <strong>Horas </strong>
+    <p id="cursoHours"></p>
+    <strong>Plazas </strong>
+    <p id="cursoPlaza">Paragraph</p>
+    <button id="cerrar">Cerrar</button>
+    </div>
 </body>
+
+</html>

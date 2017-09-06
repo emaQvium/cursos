@@ -10,7 +10,9 @@ module.exports = {
   editCurso: editCurso,
   deleteCurso: deleteCurso,
   getCurso: getCurso,
-  findCurso:findCurso
+  findCurso:findCurso,
+  findAllCursos:findAllCursos,
+  getHours:getHours
 };
 
 //crear pool de conexiones
@@ -86,7 +88,24 @@ function deleteCurso(values,callback) {
 function getCurso(values,callback) {
     pool.getConnection(function (err, conexion) {
         if (err) return;
-        var sql = "SELECT * FROM CURSOS WHERE idCURSO = (?)";
+        var sql = "SELECT * FROM CURSOS  WHERE idCURSO = (?)";
+        var inValues = values;
+        conexion.query(sql,inValues,function (err, result) {
+            if(err){
+                callback(err,null);
+            }
+            callback(null,result);
+        });
+        conexion.release();
+    });
+
+}
+function getHours(values,callback) {
+    pool.getConnection(function (err, conexion) {
+        if (err) return;
+        var sql = "SELECT h.Dia,h.HoraInicio,h.HoraFin FROM CURSOS c " +
+            "JOIN HORARIOS h ON c.idCURSO = h.idCURSO" +
+            " WHERE c.idCURSO = (?)";
         var inValues = values;
         conexion.query(sql,inValues,function (err, result) {
             if(err){
@@ -101,9 +120,26 @@ function getCurso(values,callback) {
 function findCurso(values,callback) {
     pool.getConnection(function (err, conexion) {
         if (err) return;
-        var sql = "SELECT NombreCurso, Localidad, FechaInicio, FechaFin FROM CURSOS WHERE NombreCurso RLIKE ? " +
-            "ORDER BY FechaFin DESC LIMIT ?,? ";
-        var inValues = [values.name,Number(values.pos-1),Number(values.nMax)];
+        var sql = "SELECT idCURSO, NombreCurso, Localidad, FechaInicio, FechaFin,NumPlazas " +
+            "FROM CURSOS WHERE NombreCurso RLIKE (?) " +
+            "ORDER BY FechaFin DESC LIMIT ?,?; ";
+        var inValues = [values.name,Number(values.pos),Number(values.nMax)];
+        conexion.query(sql,inValues,function (err, result) {
+            if(err){
+                callback(err,null);
+            }
+            callback(null,result);
+        });
+        conexion.release();
+    });
+
+}
+function findAllCursos(values,callback) {
+    pool.getConnection(function (err, conexion) {
+        if (err) return;
+        var sql = "SELECT COUNT(idCURSO) AS numCursos " +
+            "FROM CURSOS WHERE NombreCurso RLIKE (?);";
+        var inValues = [values.name];
         conexion.query(sql,inValues,function (err, result) {
             if(err){
                 callback(err,null);
